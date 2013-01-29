@@ -1,0 +1,56 @@
+BMP,	GIF,	 JPEG,	and	PNG
+
+0.  BMPs, JPEGs, PNGs each have 24 bits, meaning they have 2^24, or 16777216 colors.
+    GIFs only have 8 bits, so they have 2^8, or 256 colors.
+
+1.  GIFS can animate images
+
+2.  Both lossy and lossless compression compresses image data so that it takes less memory or bandwidth. Lossy compression
+    works by discarding some of the data (losing it). Here, details are lost as the image is further compressed, thus making
+    it coarser. Lossless compression uses different algorithms to ensure that no data is lost during compression; the image will
+    have the same level of detail after it's been compressed.
+
+3.  JPEGs have lossy compression.
+
+4.  A FAT system uses clusters to group and keep track of data sectors on its hard drive. A cluster is either marked as free,
+    part of a file, or defective. A file therefore consists of one or more clusters. When it is erased, the first character
+    in its directory entry is modified, thus telling the system that the directory entry can be reused. Then, the clusters
+    belonging to the file are marked "free", so the system knows that it can overwrite them. The physical data is rarely touched.
+    
+5.  To ensure permanent deletion, you can overwrite the data by filling every addressable block of memory (with ASCII NUL
+    bytes).
+    
+6.  stdint.h is a header file that is included in bmp.h. It indicates the stdint library, which defines new int types that are
+    standardized across various systems so no changes need to be made when switching systems.
+    
+7.  Using uint8_t,uint16_t,... ensures that the variable has an exact width, specified by N=8,16,... This guarantees that the
+    variable has the same number of bits (N) in every implementation. The u in front of int indicates it is unsigned, so it
+    can only range from 0 to UINTN_MAX.
+    
+8.  A BYTE is an uint8_t, so it has 8 bits or 1 byte.
+    DWORD AND LONG are both unit32_t, so it has 32 bits or 4 bytes.
+    WORD is an unit16_t, so it has 16 bits or 2 bytes.
+    
+9.  The first two bytes of a BMP file must be the letter B, followed by the letter M, in ASCII.
+ 
+10. biSize is part of the Bitmap's info header, while biSize is part of the bitmaps's file header. bfSize gives the size
+    of the entire file in bytes, while biSize gives only the size of the header in bytes (40).
+
+11. For RGB formats, biHeight being negatives means the vertical orientation of the image is top-down. The origin is at the 
+    upper left corner.
+
+12. biBitCount specifies the color depth, bits per pixel.
+
+13. If the user entered argument specifying outfile is not a valid file name, fopen could return NULL.
+
+14. fread reads an array of count elements, where count is the third parameter. In copy.c, we only want to read one element
+    (either BITMAPINFOHEADER or BITMAPFILEHEADER) at once, so we use 1 as the parameter.
+
+15. padding is assigned a value of 3, since sizeof(RGBTRIPLE) is 3 bytes, so (4-(3*3%4))%4 = 3
+
+16. fseek changes the position indicator associated with the file pointer to a new position. In copy.c, that means we can
+    skip the padding of an image.
+    
+17. SEEK_CUR is the current position in the file pointer. We set that as the origin when using fseek.
+
+18. Fozzy the bear

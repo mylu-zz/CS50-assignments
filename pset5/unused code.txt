@@ -1,0 +1,15 @@
+/**
+ *Initialize a root by mallocing it, setting its children to NULL and isWord to false
+ */
+/*node* initNode(node* trie)
+{
+    trie = malloc(sizeof(node));
+    // if malloc failed, return trie before we try to initialize it
+    if (trie == NULL)
+        return trie;
+    trie->isWord = false;
+    // sets each child to NULL
+    for (int i = 0; i < 27; i++)
+        trie->children[i] = NULL;
+    return trie;
+}*/

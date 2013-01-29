@@ -1,0 +1,47 @@
+0.  The word has the longest length in the large dictionary
+
+1.  getrusage() returns the resources used by either a process or its children (RUSAGE_SELF, RUSAGE_THREAD, or 
+    RUSAGE_CHILDREN).
+
+2.  struct rusage consists of 16 variables.
+
+3.  before and after are very large structs and thus take up a lot of memory. If we pass the data in, we would spend a lot
+    of memory. However, passing in references to these structs will not take up much memory.
+    
+4.  main first checks the user input by checking arguments and initializing variables. It then loads the dictionary and 
+    calculates the time to do so. Then, in a for loop, main spell checks the user inputted text file by iterating from the
+    first character until the end of the file. For each character, main decides if it is alphabetic (or an apostrophe), a
+    number, or neither. If it is alphabetic, main first assumes it is part of a word and thus adds the character to variable
+    word, a string that temporarily holds words. If the character is a number, than we ignore the whole string of consecutive
+    letters and numbers and assume its correctly spelled. Otherwise, if the character is neither a digit or a letter, we
+    assume its the end of the word, and thus we add the null character to our variable word and spell-check it (and determine
+    how long that takes). Once we've iterated over every character, we determine the size of the dictionary and unload, also
+    checking the time to do both.
+    is misspelled, we print it.
+
+5.  By using fgetc instead of fscanf, we can look at each character individually and  omit words that contain invalid 
+    characters such as numbers.  
+
+6.  By declaring parameters for check and load as const, we ensure that the functions do not change these parameters.
+
+7.  I used a trie data structure that stored pointers to sequences of nodes that represented words, A node contained an
+    array of 27 children nodes that represented each possible character and a bool, isWord, that indicated whether the 
+    sequence of pointers formed a word.    
+    
+8.  My code was very slow the first time it worked. I had a bunch of functions and variables that I later realized were
+    unnecessary.
+
+9.  Initially, I had a function initNode that initiated a node by mallocing it, setting its children to point to NULL, and
+    then setting isWord to false. However, I later realized that this was not necessary since check checks if the trie at
+    that level is NULL; I only needed to malloc the node. I therefore removed the initNode function and replaced it with a 
+    malloc call.
+    
+    I also changed unload to function recursively instead of trying to loop through each leaf in the trie. Similarly, I
+    counted the size of the dictionary in load and simply returned it in size instead of going through each node in the
+    trie and searching for true isWord values.
+
+10. I noticed that my unload takes a large amount of time, even after I tried my best to optimize it. My unload recursively
+    frees every node if it's not NULL, and I do not know of a more direct way to do this.
+    
+    Similarly, load takes a long time, even after I have tried to improve it by removing unecessary variables and calls to
+    other functions (such as initNode).
